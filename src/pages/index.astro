@@ -1,0 +1,57 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// svg
+import briefcase from "../../assets/svg/briefcase.svg";
+import calendarEvent from "../../assets/svg/calendar-event.svg";
+import car from "../../assets/svg/car.svg";
+import mapPin from "../../assets/svg/map-pin.svg";
+---
+
+<Layout title="Welcome to Astro.">
+  <main class="m-4">
+    <figure class="flex bg-slate-100 rounded-xl p-0">
+      <img
+        class="w-48 h-48 rounded-full my-auto ml-6"
+        src="assets/images/torvald.jpeg"
+        alt="Photo de Quentin LAURENT"
+        width="384"
+        height="512"
+      />
+      <div class="p-8 text-left space-y-4">
+        <div class="space-y-4">
+          <h1 class="font-semibold text-2xl">Quentin LAURENT</h1>
+          <p class="font-medium">
+            Développeur informatique passionné, je suis motivé et rigoureux.
+            Fort de mes 4 années d’expériences professionnelles en JavaScript,
+            j'ai fais du développement de puissantes applications web ma
+            spécialité.
+          </p>
+        </div>
+        <div class="space-y-2">
+          <div class="flex gap-x-4 items-start align-top">
+            <img src={briefcase} class="w-6" />
+            <span
+              >Technicien R&D / Technicien Réseau chez <a
+                href="https://ie-concept.fr"
+                target="_blank">IE-Concept</a
+              >
+            </span>
+          </div>
+          <div class="flex gap-x-4">
+            <img src={mapPin} class="w-6" />
+            <span>Valence, France</span>
+          </div>
+          <div class="flex gap-x-4">
+            <img src={car} class="w-6" />
+            <span>Permis B - véhiculé</span>
+          </div>
+          <div class="flex gap-x-4">
+            <img src={calendarEvent} class="w-6" />
+            <span>23 décembre 1997 (24 ans)</span>
+          </div>
+        </div>
+      </div>
+    </figure>
+  </main>
+</Layout>
