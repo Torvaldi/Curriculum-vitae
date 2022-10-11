@@ -1,9 +1,12 @@
 ---
+import dayjs from "dayjs";
 // svg
 import briefcase from "../../assets/svg/briefcase.svg";
 import calendarEvent from "../../assets/svg/calendar-event.svg";
 import car from "../../assets/svg/car.svg";
 import mapPin from "../../assets/svg/map-pin.svg";
+
+const currentAge = dayjs().diff("1997-12-23", "year");
 ---
 
 <div>
@@ -19,9 +22,15 @@ import mapPin from "../../assets/svg/map-pin.svg";
       <div class="space-y-4">
         <h1 class="font-semibold text-2xl">Quentin LAURENT</h1>
         <p>
-          Développeur informatique passionné, je suis motivé et rigoureux. Fort
-          de mes 4 années d’expériences professionnelles en JavaScript, j'ai
-          fais du développement de puissantes applications web ma spécialité.
+          Depuis mon premier ordinateur à mes 14 ans, je me suis passionné pour
+          le développement et plus particulièrement du côté web. J'ai assimilé
+          au cours de ses années différents langages comme PHP avec Symfony ou
+          Laravel et JavaScript avec React. J'apprécie beaucoup l’environnement
+          Linux et les logiciels libres pour le développement avec par exemple
+          Visual Studio Code, IntelliJ IDEA Community et Docker. Je suis
+          quelqu'un de dévoué, curieux et passionné, ce qui me donne toujours
+          l'envie de continuer d'apprendre et d'expérimenter de nouvelles
+          technologies ou langages, y compris de manière personnelle.
         </p>
       </div>
       <div class="space-y-2">
@@ -44,7 +53,7 @@ import mapPin from "../../assets/svg/map-pin.svg";
         </div>
         <div class="flex gap-x-4">
           <img src={calendarEvent} class="w-6" />
-          <span>23 décembre 1997 (24 ans)</span>
+          <span>23 décembre 1997 ({currentAge} ans)</span>
         </div>
       </div>
     </div>
