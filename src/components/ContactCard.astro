@@ -4,6 +4,7 @@ import gitlab from "../../assets/svg/gitlab.svg";
 import linkedin from "../../assets/svg/linkedin.svg";
 import mail from "../../assets/svg/mail.svg";
 import phone from "../../assets/svg/phone.svg";
+import PhoneComponent from "../NanoComponents/PhoneComponent";
 ---
 
 <div>
@@ -19,7 +20,8 @@ import phone from "../../assets/svg/phone.svg";
         </div>
         <div class="flex gap-x-4">
           <img src={phone} class="w-6" />
-          <span>(+33) 06.13.25.90.18</span>
+
+          <PhoneComponent client:visible />
         </div>
         <div class="flex gap-x-4">
           <img src={linkedin} class="w-6" />
