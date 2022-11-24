@@ -1,6 +1,7 @@
 ---
 import dayjs from "dayjs";
 // svg
+import { Image } from "@astrojs/image/components";
 import briefcase from "../../assets/svg/briefcase.svg";
 import calendarEvent from "../../assets/svg/calendar-event.svg";
 import car from "../../assets/svg/car.svg";
@@ -11,12 +12,13 @@ const currentAge = dayjs().diff("1997-12-23", "year");
 
 <div>
   <figure class="bg-slate-100 rounded-xl p-0 pt-6">
-    <img
+    <Image
       class="w-40 h-40 rounded-full my-auto ml-6"
-      src="assets/images/torvald.jpeg"
+      src="/torvald.jpeg"
       alt="Photo de Quentin LAURENT"
       width="384"
       height="512"
+      format="jpeg"
     />
     <div class="p-8 text-left space-y-4">
       <div class="space-y-4">
