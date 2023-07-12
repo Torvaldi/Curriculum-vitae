@@ -1,0 +1,13 @@
+---
+export interface Props {
+  icon: string;
+  class?: string;
+}
+
+const { icon, ...attributes } = Astro.props as Props;
+const { default: innerHtml } = await import(
+  `../../../assets/svg/${icon}.svg?raw`
+);
+---
+
+<svg {...attributes} set:html={innerHtml} />

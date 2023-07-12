@@ -1,24 +1,25 @@
 ---
-import dayjs from "dayjs";
-// svg
+// Components
 import { Image } from "@astrojs/image/components";
-import briefcase from "../../assets/svg/briefcase.svg";
-import calendarEvent from "../../assets/svg/calendar-event.svg";
-import car from "../../assets/svg/car.svg";
-import mapPin from "../../assets/svg/map-pin.svg";
-
-const currentAge = dayjs().diff("1997-12-23", "year");
+import AgeCalculator from "../../NanoComponents/AgeCalculator";
+// svg
+import briefcase from "../../../assets/svg/briefcase.svg";
+import calendarEvent from "../../../assets/svg/calendar-event.svg";
+import car from "../../../assets/svg/car.svg";
+import mapPin from "../../../assets/svg/map-pin.svg";
+// Profile picture
+import profilePic from "../../../assets/images/torvald.webp";
 ---
 
 <div>
   <figure class="bg-slate-100 rounded-xl p-0 pt-6">
     <Image
       class="w-40 h-40 rounded-full my-auto ml-6"
-      src="/torvald.jpeg"
+      src={profilePic}
       alt="Photo de Quentin LAURENT"
-      width="384"
-      height="512"
-      format="jpeg"
+      height={512}
+      aspectRatio={1 / 1}
+      format="webp"
     />
     <div class="p-8 text-left space-y-4">
       <div class="space-y-4">
@@ -37,25 +38,26 @@ const currentAge = dayjs().diff("1997-12-23", "year");
       </div>
       <div class="space-y-2">
         <div class="flex gap-x-4 items-start align-top">
-          <img src={briefcase} class="w-6" />
+          <img src={briefcase.src} class="w-6" />
           <span
             >Technicien R&D / Technicien Réseau chez <a
               href="https://ie-concept.fr"
-              target="_blank">IE-Concept</a
+              target="_blank"
+              class="underline text-blue-600 hover:text-blue-400">IE-Concept</a
             >
           </span>
         </div>
         <div class="flex gap-x-4">
-          <img src={mapPin} class="w-6" />
+          <img src={mapPin.src} class="w-6" />
           <span>Valence, France</span>
         </div>
         <div class="flex gap-x-4">
-          <img src={car} class="w-6" />
+          <img src={car.src} class="w-6" />
           <span>Permis B - véhiculé</span>
         </div>
         <div class="flex gap-x-4">
-          <img src={calendarEvent} class="w-6" />
-          <span>23 décembre 1997 ({currentAge} ans)</span>
+          <img src={calendarEvent.src} class="w-6" />
+          <span>23 décembre 1997 (<AgeCalculator />)</span>
         </div>
       </div>
     </div>

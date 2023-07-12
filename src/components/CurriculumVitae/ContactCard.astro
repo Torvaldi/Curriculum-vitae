@@ -1,10 +1,10 @@
 ---
-import github from "../../assets/svg/github.svg";
-import gitlab from "../../assets/svg/gitlab.svg";
-import linkedin from "../../assets/svg/linkedin.svg";
-import mail from "../../assets/svg/mail.svg";
-import phone from "../../assets/svg/phone.svg";
-import PhoneComponent from "../NanoComponents/PhoneComponent";
+import github from "../../../assets/svg/github.svg";
+import gitlab from "../../../assets/svg/gitlab.svg";
+import linkedin from "../../../assets/svg/linkedin.svg";
+import mail from "../../../assets/svg/mail.svg";
+import phone from "../../../assets/svg/phone.svg";
+import PhoneComponent from "../../NanoComponents/PhoneComponent";
 ---
 
 <div>
@@ -13,18 +13,18 @@ import PhoneComponent from "../NanoComponents/PhoneComponent";
       <h1 class="font-semibold text-2xl">Contacts</h1>
       <div class="space-y-2">
         <div class="flex gap-x-4 items-start align-top">
-          <img src={mail} class="w-6" />
+          <img src={mail.src} class="w-6" />
           <span>
             <a href="mailto:ql2697@gmail.com">ql2697@gmail.com</a>
           </span>
         </div>
         <div class="flex gap-x-4">
-          <img src={phone} class="w-6" />
+          <img src={phone.src} class="w-6" />
 
           <PhoneComponent client:visible />
         </div>
         <div class="flex gap-x-4">
-          <img src={linkedin} class="w-6" />
+          <img src={linkedin.src} class="w-6" />
           <span>
             <a
               href="https://www.linkedin.com/in/quentinlaurent26/"
@@ -33,13 +33,13 @@ import PhoneComponent from "../NanoComponents/PhoneComponent";
           </span>
         </div>
         <div class="flex gap-x-4">
-          <img src={github} class="w-6" />
+          <img src={github.src} class="w-6" />
           <span>
             <a href="https://github.com/Torvaldi" target="_blank">@Torvaldi</a>
           </span>
         </div>
         <div class="flex gap-x-4">
-          <img src={gitlab} class="w-6" />
+          <img src={gitlab.src} class="w-6" />
           <span>
             <a href="https://gitlab.com/Torvald" target="_blank">@Torvald</a>
           </span>
