@@ -1,36 +1,66 @@
 ---
+import { Image } from "@astrojs/image/components";
 import Layout from "../layouts/Layout.astro";
-import school from "../../assets/svg/school.svg";
-import certificate from "../../assets/svg/certificate.svg";
+import coder from "../../assets/illustrations/Coder.svg";
+import resume from "../../assets/illustrations/Resume.svg";
+import pair from "../../assets/illustrations/Pair.svg";
+import profilePic from "../../assets/images/torvald.webp";
 ---
 
 <Layout title="Quentin LAURENT">
-  <main class="lg:mx-96 mx-4 my-4 lg:my-8 grid grid-cols-2 gap-12">
-    <div
-      class="group bg-slate-100 rounded-xl p-8 mb-8 border-4 border-black hover:border-blue-600 hover:cursor-pointer flex items-center"
-    >
-      <img
-        src={school.src}
-        class="w-20 text-blue-600 group-hover:text-blue-700 group-focus:text-blue-800 duration-300 transition ease-in-out"
+  <!-- <Navbar /> -->
+  <main class="lg:mx-96 mx-4 my-4 lg:my-8">
+    <div class="flex justify-center align-middle mb-8">
+      <Image
+        class="w-48 h-48 rounded-full shadow-md"
+        src={profilePic}
+        alt="Photo de Quentin LAURENT"
+        height={800}
+        aspectRatio={1 / 1}
+        format="webp"
       />
-      <h2
-        class="text-3xl font-bold ml-4 group-hover:text-blue-700 group-focus:text-blue-800"
-      >
-        Cours & formations
-      </h2>
     </div>
-    <div
-      class="group bg-slate-100 rounded-xl p-8 mb-8 border-4 border-black hover:border-blue-600 hover:cursor-pointer flex items-center"
-    >
-      <img
-        src={certificate.src}
-        class="w-20 text-blue-600 group-hover:text-blue-700 group-focus:text-blue-800 duration-300 transition ease-in-out"
-      />
-      <h2
-        class="text-3xl font-bold ml-4 group-hover:text-blue-700 group-focus:text-blue-800"
+
+    <div class="grid grid-rows-2 grid-flow-col gap-8">
+      <a
+        href="/resume"
+        class="row-span-3 w-full h-full bg-red-500 rounded-md flex flex-col justify-center align-middle items-center p-6"
       >
-        Curriculum Vitae
-      </h2>
+        <Image
+          class="w-36"
+          src={resume}
+          alt="Illustration d'un CV"
+          aspectRatio={1 / 1}
+          format="webp"
+        />
+        <h2 class="text-3xl p-8 font-bold text-white">Mon CV</h2>
+      </a>
+
+      <a
+        class="col-span-2 w-full h-full bg-green-500 rounded-md flex flex-col justify-center align-middle items-center p-6"
+      >
+        <Image
+          class="w-36"
+          src={pair}
+          alt="Illustration de pair programming"
+          aspectRatio={1 / 1}
+          format="webp"
+        />
+        <h2 class="text-3xl p-8 font-bold text-white">Mes cours</h2>
+      </a>
+
+      <a
+        class="row-span-2 col-span-2 w-full h-full bg-yellow-500 rounded-md flex flex-col justify-center align-middle items-center p-6"
+      >
+        <Image
+          class="w-36"
+          src={coder}
+          alt="Illustration d'un développeur"
+          aspectRatio={1 / 1}
+          format="webp"
+        />
+        <h2 class="text-3xl p-8 font-bold text-white">Mes projets</h2>
+      </a>
     </div>
   </main>
 </Layout>

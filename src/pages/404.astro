@@ -1,0 +1,20 @@
+---
+import { Image } from "@astrojs/image/components";
+import notFound from "../../assets/illustrations/NotFound.svg";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="404 - Quentin LAURENT">
+  <div class="w-screen h-screen flex flex-col justify-center items-center">
+    <Image
+      class="w-48 h-48 rounded-full shadow-md"
+      src={notFound}
+      alt="Photo de Quentin LAURENT"
+      height={200}
+      aspectRatio={1 / 1}
+      format="webp"
+    />
+    <h1 class="text-4xl font-bold text-white mb-4">404 - Page introuvable</h1>
+    <a class="px-4 py-2 bg-red-500" href="/">Retourner à l'accueil</a>
+  </div>
+</Layout>
