@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <title>Utilisation de Docker</title>
+
+  <link rel="stylesheet" href="../../assets/docker_cli_docker_compose/dist/reset.css" />
+  <link rel="stylesheet" href="../../assets/docker_cli_docker_compose/dist/reveal.css" />
+  <link rel="stylesheet" href="../../assets/docker_cli_docker_compose/dist/theme/black.css" />
+
+  <!-- Theme used for syntax highlighted code -->
+  <link rel="stylesheet" href="../../assets/docker_cli_docker_compose/plugin/highlight/monokai.css" />
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h3>Utilisation de Docker</h3>
+        <p>Docker CLI & Docker compose</p>
+      </section>
+
+      <section>
+        <section>
+          <h3>Créer un réseau privé Docker</h3>
+          <pre><code data-trim data-noescape class="language-bash">
+				docker network create net_redmine
+					</code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim data-noescape class="language-json">
+            [
+              {
+                "Name": "net_redmine",
+                "Id": "e4785ccd3f279f67102e89100727434830839d5c767c111c1646c7e780752ba5",
+                "Created": "2024-01-02T08:00:00.0000000+01:00",
+                "Scope": "local",
+                "Driver": "bridge",
+                "EnableIPv6": false,
+                "IPAM": {
+                  "Driver": "default",
+                  "Options": {},
+                  "Config": [
+                    {
+                    "Subnet": "172.21.0.0/16",
+                    "Gateway": "172.21.0.1"
+                    }
+                  ]
+                },
+                "Internal": false,
+                "Attachable": false,
+                "Ingress": false,
+                "ConfigFrom": {
+                  "Network": ""
+                },
+                "ConfigOnly": false,
+                "Containers": {},
+                "Options": {},
+                "Labels": {}
+              }
+            ]
+          </code></pre>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h3>Lancer une image docker</h3>
+          <pre><code data-trim data-noescape>
+            docker run -d --name redmine \
+              -e REDMINE_DB_POSTGRES=redmine_postgres \
+              -e REDMINE_DB_PORT=5432 \
+              -e REDMINE_DB_USERNAME=redmine \
+              -e REDMINE_DB_PASSWORD=password \
+              -v /docker/redmine/files:/usr/src/redmine/files \
+              -p 3000:3000 \
+              redmine:5.1.1
+				  </code></pre>
+        </section>
+
+        <section>
+          <h4>Execution de la commande</h4>
+          <pre><code data-trim data-noescape class="language-json">
+            Unable to find image 'redmine:5.1.1' locally
+            5.1.1: Pulling from library/redmine
+            c57ee5000d61: Pull complete
+            13a55ed9b500: Pull complete
+            f3a64129f6f1: Pull complete
+            f1fc8038243d: Pull complete
+            d07a5b13edfb: Pull complete
+            9ef903d2386a: Pull complete
+            7220892a7c1e: Pull complete
+            2b090080f53a: Pull complete
+            d9a15f665479: Pull complete
+            f59bddb893dd: Pull complete
+            4d4638e97dc4: Pull complete
+            a748aa1b5ffe: Pull complete
+            3782e7142ec5: Pull complete
+            Digest: sha256:d3941ff673460f906aa02d4fb7b4b36249cea34280e63f856ee85f29b2c86b22
+            Status: Downloaded newer image for redmine:5.1.1
+            5cc7c37cfe030636ab40489371c556d70107937e7120d33a1f57e8d35c83d6ed
+          </code></pre>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h3>Vérification du conteneur Docker</h3>
+          <pre><code data-trim data-noescape>
+          docker ps -a
+        </code></pre>
+
+          <pre><code data-trim data-noescape>
+          CONTAINER ID    IMAGE            COMMAND                   CREATED           STATUS                              PORTS    NAMES
+          7ca5be0935a1    redmine:5.1.1    "/docker-entrypoint.…"    22 seconds ago    Exited (1) 19 seconds ago                    redmine
+          </code></pre>
+        </section>
+
+        <section>
+          <h4>Afficher les logs du conteneur</h4>
+          <pre><code data-trim data-noescape>
+          docker logs redmine
+          </code></pre>
+
+          <pre><code data-trim data-noescape>
+            Caused by:
+            PG::ConnectionBad: could not translate host name "redmine_postgres" to address: Name or service not known
+            (PG::ConnectionBad)
+          </code></pre>
+        </section>
+      </section>
+
+      <section>
+        <h3>Ajout du conteneur Postgres</h3>
+
+        <pre><code data-trim data-noescape>
+          docker run -d --name redmine_postgres \
+          -e POSTGRES_PASSWORD=password \
+          -e POSTGRES_USER=redmine \
+          -e POSTGRES_DB=redmine \
+          -v /docker/redmine/db_data:/var/lib/postgresql \
+          postgres:16.1
+        </code></pre>
+      </section>
+
+      <section>
+        <section>
+          <h3>Ajout des conteneur dans le réseau</h3>
+
+          <pre><code data-trim data-noescape>
+          docker network connect net_redmine redmine
+          docker network connect net_redmine redmine_postgres
+
+          # Redémarrage du conteneur redmine
+          docker start redmine
+          </code></pre>
+        </section>
+        <section>
+          <h3>Vérification du réseau</h3>
+
+          <pre><code data-trim data-noescape>
+          [
+            {
+              "Name": "net_redmine",
+              "Id": "0dea77e189c3b1767ff4e9078d35c56412cec1f0173d7111db4a1856bc50f805",
+              "Created": "2024-02-07T08:15:23.992275278+01:00",
+              "Scope": "local",
+              "Driver": "bridge",
+              "EnableIPv6": false,
+              "IPAM": {
+                "Driver": "default",
+                "Options": {},
+                "Config": [
+                  {
+                    "Subnet": "172.22.0.0/16",
+                    "Gateway": "172.22.0.1"
+                  }
+                ]
+              },
+              "Internal": false,
+              "Attachable": false,
+              "Ingress": false,
+              "ConfigFrom": {
+                "Network": ""
+              },
+              "ConfigOnly": false,
+              "Containers": {
+                "5cc7c37cfe030636ab40489371c556d70107937e7120d33a1f57e8d35c83d6ed": {
+                  "Name": "redmine",
+                  "EndpointID": "aaa383c59e2cfb99bb8c743fae04e6f257bdfcc890265124bcffd23493161632",
+                  "MacAddress": "02:42:ac:16:00:03",
+                  "IPv4Address": "172.22.0.3/16",
+                  "IPv6Address": ""
+                },
+                "c8aebfef49b95e36f90c87a327df40d94f3f06b7202310a3b66ce4915f4abb66": {
+                  "Name": "redmine_postgres",
+                  "EndpointID": "968319e15fb39f6568d4601d4d1d860e34a77144c4e7b1d608a5d231c8670c89",
+                  "MacAddress": "02:42:ac:16:00:02",
+                  "IPv4Address": "172.22.0.2/16",
+                  "IPv6Address": ""
+                }
+              },
+              "Options": {},
+              "Labels": {}
+            }
+          ]
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>Vérification du lancement de Redmine</h3>
+
+          <img src="../../assets/docker_cli_docker_compose/dist/images/redmine.png" alt="Redmine" />
+        </section>
+      </section>
+
+      <section>
+        <h3>Arrêt et nettoyage du système Docker</h3>
+
+        <pre><code data-trim data-noescape>
+            docker stop $(docker ps -aq)
+  
+            docker system prune -a --volumes
+          </code></pre>
+      </section>
+
+      <section>
+        <section>
+          <h3>Tout regrouper dans un docker-compose.yml</h3>
+
+          <pre><code data-trim data-noescape data-line-numbers="3,4">
+            version: '3.8'
+            
+            networks:
+              redmine_net:
+            
+            services:
+              redmine:
+                image: redmine:5.1.1
+                container_name: redmine
+                environment:
+                REDMINE_DB_POSTGRES: redmine_postgres
+                REDMINE_DB_USERNAME: redmine
+                REDMINE_DB_PASSWORD: password
+                REDMINE_DB_PORT: 5432
+                volumes:
+                  - /docker/redmine/files:/usr/src/redmine/files
+                depends_on:
+                  - redmine_postgres
+                ports:
+                  - 3000:3000
+                networks:
+                  - redmine_net
+            
+            redmine_postgres:
+              image: postgres:13.3
+              container_name: redmine_postgres
+              environment:
+              POSTGRES_DB: redmine
+              POSTGRES_USER: redmine
+              POSTGRES_PASSWORD: password
+              volumes:
+                - /docker/redmine/db_data:/var/lib/postgresql/data
+              networks:
+                - redmine_net
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim data-noescape data-line-numbers="6-22">
+            version: '3.8'
+            
+            networks:
+              redmine_net:
+            
+            services:
+              redmine:
+                image: redmine:5.1.1
+                container_name: redmine
+                environment:
+                REDMINE_DB_POSTGRES: redmine_postgres
+                REDMINE_DB_USERNAME: redmine
+                REDMINE_DB_PASSWORD: password
+                REDMINE_DB_PORT: 5432
+                volumes:
+                  - /docker/redmine/files:/usr/src/redmine/files
+                depends_on:
+                  - redmine_postgres
+                ports:
+                  - 3000:3000
+                networks:
+                  - redmine_net
+            
+            redmine_postgres:
+              image: postgres:13.3
+              container_name: redmine_postgres
+              environment:
+              POSTGRES_DB: redmine
+              POSTGRES_USER: redmine
+              POSTGRES_PASSWORD: password
+              volumes:
+                - /docker/redmine/db_data:/var/lib/postgresql/data
+              networks:
+                - redmine_net
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim data-noescape data-line-numbers="24-34">
+            version: '3.8'
+            
+            networks:
+              redmine_net:
+            
+            services:
+              redmine:
+                image: redmine:5.1.1
+                container_name: redmine
+                environment:
+                REDMINE_DB_POSTGRES: redmine_postgres
+                REDMINE_DB_USERNAME: redmine
+                REDMINE_DB_PASSWORD: password
+                REDMINE_DB_PORT: 5432
+                volumes:
+                  - /docker/redmine/files:/usr/src/redmine/files
+                depends_on:
+                  - redmine_postgres
+                ports:
+                  - 3000:3000
+                networks:
+                  - redmine_net
+            
+            redmine_postgres:
+              image: postgres:13.3
+              container_name: redmine_postgres
+              environment:
+              POSTGRES_DB: redmine
+              POSTGRES_USER: redmine
+              POSTGRES_PASSWORD: password
+              volumes:
+                - /docker/redmine/db_data:/var/lib/postgresql/data
+              networks:
+                - redmine_net
+          </code></pre>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h3>Exécution du docker-compose</h3>
+
+          <pre><code data-trim data-noescape>
+          docker compose up -d
+        </code></pre>
+        </section>
+
+        <section>
+          <pre><code data-trim data-noescape>
+            ✔ redmine_postgres 13 layers [⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿] 0B/0B Pulled 110.9s
+            ✔ 33847f680f63    Pull complete    8.9s
+            ✔ 1b09e96014b3    Pull complete    103.8s
+            ✔ eb49b6d9d1f3    Pull complete    9.4s
+            ✔ 4057ebf78d2d    Pull complete    9.5s
+            ✔ f92d870e2c4f    Pull complete    10.0s
+            ✔ b03847575a18    Pull complete    10.0s
+            ✔ 475945131fa9    Pull complete    10.5s
+            ✔ c042b5a6607d    Pull complete    10.5s
+            ✔ cfe883b776dc    Pull complete    11.9s
+            ✔ 61af04e5c3eb    Pull complete    11.5s
+            ✔ 4e9965ae9062    Pull complete    12.4s
+            ✔ 7b9708b81aa6    Pull complete    12.4s
+            ✔ 871877336770    Pull complete    12.8s
+            ✔ redmine 13 layers [⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿] 0B/0B Pulled 18.3s
+            ✔ c57ee5000d61    Pull complete    1.0s
+            ✔ 13a55ed9b500    Pull complete    1.0s
+            ✔ f3a64129f6f1    Pull complete    0.5s
+            ✔ f1fc8038243d    Pull complete    1.8s
+            ✔ d07a5b13edfb    Pull complete    1.4s
+            ✔ 9ef903d2386a    Pull complete    1.5s
+            ✔ 7220892a7c1e    Pull complete    3.4s
+            ✔ 2b090080f53a    Pull complete    7.0s
+            ✔ d9a15f665479    Pull complete    6.9s
+            ✔ f59bddb893dd    Pull complete    7.0s
+            ✔ 4d4638e97dc4    Pull complete    7.5s
+            ✔ a748aa1b5ffe    Pull complete    9.0s
+            ✔ 3782e7142ec5    Pull complete    7.9s
+            [+] Running 2/3
+            ⠸ Network files_redmine_net Created 1.3s
+            ✔ Container redmine_postgres Started 0.7s
+            ✔ Container redmine Started
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>Vérification du lancement de Redmine</h3>
+
+          <pre><code data-trim data-noescape>
+            docker ps
+          </code></pre>
+
+          <pre><code data-trim data-noescape>
+            CONTAINER ID    IMAGE           COMMAND                  CREATED           STATUS           PORTS                                       NAMES
+            ba5d35c60411    redmine:5.1.1   "/docker-entrypoint.…"   11 seconds ago    Up 10 seconds    0.0.0.0:3000->3000/tcp, :::3000->3000/tcp   redmine
+            62d134d3a006    postgres:13.3   "docker-entrypoint.s…"   11 seconds ago    Up 10 seconds    5432/tcp                                    redmine_postgres
+          </code></pre>
+        </section>
+      </section>
+
+      <section>
+        <h3>Arrêt et nettoyage de Redmine</h3>
+
+        <pre><code data-trim data-noescape>
+            docker compose down
+          </code></pre>
+    </div>
+  </div>
+
+  <script src="../../assets/docker_cli_docker_compose/dist/reveal.js"></script>
+  <script src="../../assets/docker_cli_docker_compose/plugin/notes/notes.js"></script>
+  <script src="../../assets/docker_cli_docker_compose/plugin/markdown/markdown.js"></script>
+  <script src="../../assets/docker_cli_docker_compose/plugin/highlight/highlight.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+
+      // Learn about plugins: https://revealjs.com/plugins/
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+    });
+  </script>
+</body>
+
+</html>
