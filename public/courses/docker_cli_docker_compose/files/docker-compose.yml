@@ -1,0 +1,34 @@
+version: "3.8"
+
+networks:
+  redmine_net:
+
+services:
+  redmine:
+    image: redmine:5.1.1
+    container_name: redmine
+    environment:
+      REDMINE_DB_POSTGRES: redmine_postgres
+      REDMINE_DB_USERNAME: redmine
+      REDMINE_DB_PASSWORD: password
+      REDMINE_DB_PORT: 5432
+    volumes:
+      - /docker/redmine/files:/usr/src/redmine/files
+    depends_on:
+      - redmine_postgres
+    ports:
+      - 3000:3000
+    networks:
+      - redmine_net
+
+  redmine_postgres:
+    image: postgres:13.3
+    container_name: redmine_postgres
+    environment:
+      POSTGRES_DB: redmine
+      POSTGRES_USER: redmine
+      POSTGRES_PASSWORD: password
+    volumes:
+      - /docker/redmine/db_data:/var/lib/postgresql/data
+    networks:
+      - redmine_net

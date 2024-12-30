@@ -9,7 +9,11 @@ const { title, url }: Props = Astro.props;
 ---
 
 <li class="bg-white w-full hover:bg-blue-50">
-  <a href={url} class="p-4 w-full h-full flex justify-between align-middle">
+  <a
+    href={url}
+    target="_blank"
+    class="p-4 w-full h-full flex justify-between align-middle"
+  >
     <span>{title}</span>
     <svg
       width="24"
